@@ -21,9 +21,15 @@ const App: React.FC = () => {
 
   return (
     <div className="App">
-      <span className="heading">Taskify</span>
+      <span className="heading">
+        {"TASKIFY".split("").map((char, index) => (
+          <span key={index} className="heading-char">
+            {char}
+          </span>
+        ))}
+      </span>
       <InputField todo={todo} setTodo={setTodo} handleAdd={handleAdd} />
-      <TodoList todos={todos} setTodos={setTodos}/>
+      <TodoList todos={todos} setTodos={setTodos} />
     </div>
   );
 };

@@ -1,3 +1,40 @@
+.heading {
+  font-size: 40px;
+  cursor: default;
+}
+
+.heading-char {
+  display: inline-block;
+  transition: 0.3s ease;
+}
+
+.heading-char:hover {
+  transform: translateY(-5px);
+}
+
+/* Assign colors based on the letter's order */
+.heading-char:nth-child(1):hover {
+  color: #ff4757;
+} /* Red */
+.heading-char:nth-child(2):hover {
+  color: #ff26e2;
+} /* Green */
+.heading-char:nth-child(3):hover {
+  color: #1e90ff;
+} /* Blue */
+.heading-char:nth-child(4):hover {
+  color: #ffa502;
+} /* Orange */
+.heading-char:nth-child(5):hover {
+  color: #3742fa;
+} /* Indigo */
+.heading-char:nth-child(6):hover {
+  color: #ff6b81;
+} /* Pink */
+.heading-char:nth-child(7):hover {
+  color: #ffffff;
+} /* Grey */
+
 .input {
   display: flex;
   width: 400px;
@@ -14,6 +51,7 @@
   transition: 150ms cubic-bezier(0.4, 0, 0.2, 1);
   color: #fefefe;
   background: transparent;
+  transition: 0.5s ease;
 }
 
 /* Floating label */
@@ -35,17 +73,34 @@
   top: -35px;
   left: 0.8rem;
   font-size: 20px;
+  transition: 0.5s ease;
+}
+
+.input__box:focus {
+  /* box-shadow: [horizontal] [vertical] [blur] [spread] [color] */
+  box-shadow: 0 0 15px 5px rgba(47, 116, 192, 0.4);
+
+  /* Optional: smoothing the transition */
+  transition: box-shadow 0.3s ease-in-out;
+  outline: none; /* Removes the default browser border */
+  transition: 0.5s ease;
+}
+
+.input__box:hover {
+  transform: scale(0.975);
+  transition: 0.5s ease;
 }
 
 .input__submit {
   position: absolute;
-  width: 40px;
-  height: 40px;
+  width: 38px;
+  height: 28px;
   margin: 12px;
-  border-radius: 50px;
+  border-radius: 5px;
   right: 0px;
   border: none;
-  font-size: 12px;
+  font-size: 15px;
+  font-weight: bold;
   background-color: #2f74c0;
   color: white;
   transition: 0.5s all;
@@ -63,6 +118,7 @@
 /* has all the cards [GRID] */
 .cards-container {
   display: grid;
+  margin: 20px;
   grid-template-columns: repeat(3, 1fr);
   gap: 100px;
   padding: 20px;
@@ -75,7 +131,7 @@
   justify-content: space-between;
 
   min-height: 150px;
-  width: 100%;
+  min-width: 150px;
 
   border-radius: 10px;
   padding: 20px;
@@ -107,7 +163,7 @@
   cursor: pointer;
   border-radius: 5px;
   border: 1px solid black;
-  background: rgba(255, 255, 255, 0.8);
+  background: transparent;
   transition: 0.3s all;
 }
 
@@ -115,22 +171,93 @@
   transform: scale(1.1);
 }
 
-.icon-btn:focus{
+.icon-btn:focus {
   transform: scale(0.9);
 }
 
 .icon-btn img {
-    width: 20px;
-    height: 20px;
-    object-fit: contain;
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, 0.3));
 }
 
-/* Card Rotation */
-
-.todo-card:nth-child(even) {
-  transform: rotate(1deg);
+/* EDIT TODO */
+.todo-edit-input {
+  width: 100%;
+  font-size: 20px;
+  padding: 5px;
+  border-radius: 5px;
+  border: 1px solid #161515;
+  background: transparent;
 }
 
-.todo-card:nth-child(odd) {
-  transform: rotate(-1deg);
+/* Done Card */
+.todo-card--done {
+  background-image: none;
+  background-color: #9be7a1;
+  opacity: 0.85;
+}
+
+.todo-card--done .todo-text {
+  text-decoration: line-through;
+}
+
+/* Add Todo Animation */
+
+.todo-card--enter--even {
+  animation: popInEven 0.4s ease-out forwards;
+}
+
+.todo-card--enter--odd {
+  animation: popInOdd 0.4s ease-out forwards;
+}
+
+/* Animation for Even cards (rotating positive) */
+@keyframes popInEven {
+  0% {
+    opacity: 0;
+    transform: scale(0.5) translateY(30px) rotate(0deg);
+  }
+  70% {
+    transform: scale(1.1) translateY(-5px) rotate(10deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0) rotate(1deg);
+  }
+}
+
+/* Animation for Odd cards (rotating negative) */
+@keyframes popInOdd {
+  0% {
+    opacity: 0;
+    transform: scale(0.5) translateY(30px) rotate(0deg);
+  }
+  70% {
+    transform: scale(1.1) translateY(-5px) rotate(-10deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0) rotate(-1deg);
+  }
+}
+
+/* Todo Delete Animation */
+.todo-card--deleting {
+  animation: deleteAnim 0.5s ease forwards;
+}
+
+@keyframes deleteAnim {
+  0% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+  50% {
+    transform: scale(1.1) rotate(3deg);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.3) rotate(-10deg) translateY(50px);
+  }
 }

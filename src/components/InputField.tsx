@@ -33,7 +33,7 @@ const InputField: React.FC<Props> = ({ todo, setTodo, handleAdd }) => {
       </label>
 
       <button className="input__submit" type="submit">
-        Go
+        +
       </button>
     </form>
   );
