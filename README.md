@@ -1,5 +1,11 @@
 # Taskify - Modern Todo App with Authentication
 
+<p align="center">
+  <a href="https://todo-app-rosy-three-39.vercel.app" target="_blank">
+    <img src="https://img.shields.io/badge/🌐_Launch_App-00C853?style=for-the-badge&logoColor=white" alt="Launch App"/>
+  </a>
+</p>
+
 A full-stack todo application built with React, TypeScript, and Supabase. Features user authentication, real-time data persistence, and a clean, animated UI.
 
  ![Taskify Demo](./src/Images/screenshot.png)
