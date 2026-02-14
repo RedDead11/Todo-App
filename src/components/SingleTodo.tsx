@@ -1,4 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
+import { supabase } from "../lib/supabase";
 import { Todo } from "../model";
 import "./styles.css";
 import editIcon from "../Images/Edit Icon.png";
@@ -43,13 +44,28 @@ const SingleTodo = ({ todo, todos, setTodos }: Props) => {
     return () => clearTimeout(timer);
   }, [isEditing]);
 
-  const handleEditSave = () => {
+  const handleEditSave = async () => {
     if (editText.trim() === "") return;
-    setTodos(
-      todos.map((t) => (t.id === todo.id ? { ...t, todo: editText } : t)),
-    );
-    setIsEditing(false);
-  };
+
+    try {
+      // Update in Supabase
+      const { error } = await supabase
+        .from("todos")
+        .update({ todo: editText })
+        .eq("id", todo.id);
+
+      if (error) throw error;
+
+      // Update local state
+      setTodos(
+        todos.map((t) => (t.id === todo.id ? { ...t, todo: editText } : t))
+      );
+      setIsEditing(false);
+    } catch (error) {
+      console.error("Error updating todo:", error);
+      alert("Failed to update todo");
+    }
+  };  
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" || e.key === "Escape") {
@@ -57,27 +73,56 @@ const SingleTodo = ({ todo, todos, setTodos }: Props) => {
     }
   };
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     playDeleteSound();
     setIsDeleting(true);
 
-    setTimeout(() => {
-      setTodos(todos.filter((t) => t.id !== todo.id));
+    setTimeout(async () => {
+      try {
+        // Delete from Supabase
+        const { error } = await supabase
+          .from("todos")
+          .delete()
+          .eq("id", todo.id);
+
+        if (error) throw error;
+
+        // Remove from local state
+        setTodos(todos.filter((t) => t.id !== todo.id));
+      } catch (error) {
+        console.error("Error deleting todo:", error);
+        alert("Failed to delete todo");
+        setIsDeleting(false);
+      }
     }, 300);
   };
 
-  const handleDone = () => {
-    const updatedTodos = todos.map((t) =>
-      t.id === todo.id ? { ...t, isDone: !t.isDone } : t,
-    );
+  const handleDone = async () => {
+    try {
+      // Update in Supabase
+      const { error } = await supabase
+        .from("todos")
+        .update({ is_done: !todo.isDone })
+        .eq("id", todo.id);
 
-    // move completed todos to the end
-    const sortedTodos = [
-      ...updatedTodos.filter((t) => !t.isDone),
-      ...updatedTodos.filter((t) => t.isDone),
-    ];
+      if (error) throw error;
 
-    setTodos(sortedTodos);
+      // Update local state
+      const updatedTodos = todos.map((t) =>
+        t.id === todo.id ? { ...t, isDone: !t.isDone } : t
+      );
+
+      // Sort: incomplete first, completed last
+      const sortedTodos = [
+        ...updatedTodos.filter((t) => !t.isDone),
+        ...updatedTodos.filter((t) => t.isDone),
+      ];
+
+      setTodos(sortedTodos);
+    } catch (error) {
+      console.error("Error toggling todo:", error);
+      alert("Failed to update todo");
+    }
   };
 
   return (
@@ -85,14 +130,9 @@ const SingleTodo = ({ todo, todos, setTodos }: Props) => {
       className={`todo-card
       ${todo.isDone ? "todo-card--done" : ""} 
       ${isDeleting ? "todo-card--deleting" : ""}
-      ${
-        isEntering
-          ? todo.id % 2 === 0
-            ? "todo-card--enter--even"
-            : "todo-card--enter--odd"
-          : ""
-      }
+      ${isEntering ? "todo-card--enter" : ""}
     `}
+    onSubmit={(e) => e.preventDefault()}
     >
       <div className="todo-text">
         {isEditing ? (

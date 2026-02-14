@@ -2,9 +2,9 @@ import React, { useRef } from "react";
 import "./styles.css";
 
 interface Props {
-  todo: string;
-  setTodo: React.Dispatch<React.SetStateAction<string>>;
-  handleAdd: (e: React.FormEvent) => void;
+  todo: string; // Current input
+  setTodo: React.Dispatch<React.SetStateAction<string>>; // func to update it
+  handleAdd: (e: React.FormEvent) => void; // func to ADD todo
 }
 
 const InputField: React.FC<Props> = ({ todo, setTodo, handleAdd }) => {
@@ -12,15 +12,15 @@ const InputField: React.FC<Props> = ({ todo, setTodo, handleAdd }) => {
 
   return (
     <form
-      className="input"
+      className="input" 
       onSubmit={(e) => {
-        handleAdd(e);
+        handleAdd(e); // Add the todo (called from App.tsx)
         inputRef.current?.blur();
       }}
     >
       <input
-        ref={inputRef}
-        type="input"
+        ref={inputRef}  // connects to the ref above
+        type="text"
         value={todo}
         onChange={(e) => setTodo(e.target.value)}
         id="task-input"

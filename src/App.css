@@ -1,27 +1,60 @@
-@import url('https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Neucha&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Neucha&display=swap");
 
 .App {
-    width: 100vw;
-    height: 100vw;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: #2c2a2a;
-    font-family: "Neucha", cursive;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #2c2a2a;
+  font-family: "Neucha", cursive;
 }
 
 .heading {
-    text-transform: uppercase;
-    font-size: 40px;
-    margin: 30px 0;
-    color: rgb(23, 238, 181);
-    z-index: 1;
-    text-align: center;
+  text-transform: uppercase;
+  font-size: clamp(24px, 5vw, 40px);
+  margin: clamp(15px, 3vw, 30px) 0;
+  color: rgb(23, 238, 181);
+  z-index: 1;
+  text-align: center;
+  cursor: default;
 }
 
+.heading-char {
+  display: inline-block;
+  transition: 0.3s ease;
+}
+
+.heading-char:hover {
+  transform: translateY(-5px);
+}
+
+/* Assign colors based on the letter's order */
+.heading-char:nth-child(1):hover {
+  color: #ff4757;
+} /* Red */
+.heading-char:nth-child(2):hover {
+  color: #ff26e2;
+} /* Green */
+.heading-char:nth-child(3):hover {
+  color: #1e90ff;
+} /* Blue */
+.heading-char:nth-child(4):hover {
+  color: #ffa502;
+} /* Orange */
+.heading-char:nth-child(5):hover {
+  color: #3742fa;
+} /* Indigo */
+.heading-char:nth-child(6):hover {
+  color: #ff6b81;
+} /* Pink */
+.heading-char:nth-child(7):hover {
+  color: #ffffff;
+} /* Grey */
+
 @media (max-width: 800px) {
-    .heading {
-        margin: 15px 0;
-        font-size: 35px;
-    }
+  .heading {
+    margin: 15px 0;
+    font-size: 35px;
+  }
 }
